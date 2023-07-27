@@ -1,5 +1,7 @@
 package com.parim;
 
+import com.parim.client.OfflineGameClient;
+import com.parim.client.OnlineGameClient;
 import com.parim.view.MainFrame;
 
 import java.io.IOException;
@@ -9,8 +11,7 @@ public class Client {
     private static Client instance;
     private Socket socket;
     private MainFrame mainFrame;
-    private ConnectToServer connectToServer;
-    private boolean clickedOnTryAgain = true;
+    private boolean clickedOnTryAgain = true, clickedOnOfflineGame = false;
     public Client(){
         if (instance != null) return;
         instance = this;
@@ -24,8 +25,12 @@ public class Client {
             sleep(1000);
             if (clickedOnTryAgain)
                 tryToConnect();
+            if (clickedOnOfflineGame){
+                runOfflineGame();
+                break;
+            }
         }
-        System.out.println("TADAAAAA\nConnected!");
+        runOnlineGame();
     }
 
     public void tryToConnect() {
@@ -36,16 +41,13 @@ public class Client {
             clickedOnTryAgain = false;
             mainFrame.setFailedConnectionPage();
         }
-
-        /*connectToServer = new ConnectToServer(socket);
-        runClient2();*/
     }
 
-    private void runClient2(){
-        while (!socket.isClosed()){
-
-        }
-        // TODO: notify server that client disconnected
+    private void runOfflineGame(){
+        new OfflineGameClient();
+    }
+    private void runOnlineGame(){
+        new OnlineGameClient(socket);
     }
 
     public static void main(String[] args) {
@@ -57,6 +59,9 @@ public class Client {
     }
     public void clickedOnOnlineGame() {
         clickedOnTryAgain = true;
+    }
+    public void clickedOnOfflineGame(){
+        clickedOnOfflineGame = true;
     }
     private void sleep(long millis){
         try {

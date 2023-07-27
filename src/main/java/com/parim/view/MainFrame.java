@@ -61,6 +61,6 @@ public class MainFrame extends JFrame {
         Client.getInstance().clickedOnOnlineGame();
     }
     public void clickedOnOfflineGame(){
-        new OfflineGameClient();
+        Client.getInstance().clickedOnOfflineGame();
     }
 }
