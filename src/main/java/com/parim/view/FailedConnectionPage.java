@@ -12,6 +12,7 @@ public class FailedConnectionPage extends JPanel {
         this.add(tryAgain);
 
         offline = new ButtonCreator(650 + 200, 300, "Continue Offline");
+        offline.addActionListener(e -> MainFrame.getInstance().clickedOnOfflineGame());
         this.add(offline);
 
         this.setLayout(null);

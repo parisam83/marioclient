@@ -1,6 +1,7 @@
 package com.parim.view;
 
 import com.parim.Client;
+import com.parim.client.OfflineGameClient;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,5 +59,8 @@ public class MainFrame extends JFrame {
 
     public void clickedOnTryAgain() {
         Client.getInstance().clickedOnOnlineGame();
+    }
+    public void clickedOnOfflineGame(){
+        new OfflineGameClient();
     }
 }
