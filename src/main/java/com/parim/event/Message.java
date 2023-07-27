@@ -1,26 +1,26 @@
 package com.parim.event;
 
 public class Message {
-    private String message;
+    private String title;
     private FormEvent formEvent;
 
     public Message() {}
 
-    public Message(String message, FormEvent formEvent){
-        this.message = message;
+    public Message(String title, FormEvent formEvent){
+        this.title = title;
         this.formEvent = formEvent;
     }
 
-    public String getMessage() {
-        return message;
+    public String getTitle() {
+        return title;
     }
 
     public FormEvent getFormEvent() {
         return formEvent;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setFormEvent(FormEvent formEvent) {
