@@ -1,5 +1,6 @@
-package com.parim.view;
+package com.parim.view.page;
 
+import com.parim.view.MainFrame;
 import com.parim.view.swingObjects.ButtonCreator;
 
 import javax.swing.*;

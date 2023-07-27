@@ -1,7 +1,8 @@
 package com.parim.view;
 
 import com.parim.Client;
-import com.parim.client.OfflineGameClient;
+import com.parim.view.page.ConnectingPage;
+import com.parim.view.page.FailedConnectionPage;
 
 import javax.swing.*;
 import java.awt.*;
