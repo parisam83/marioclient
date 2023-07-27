@@ -4,13 +4,17 @@ import com.parim.Client;
 import com.parim.ConnectToServer;
 import com.parim.event.Message;
 import com.parim.event.UserEvent;
+import com.parim.view.MainFrame;
 
 import java.net.Socket;
 
 public class OnlineGameClient {
+    private static OnlineGameClient instance;
     private Socket socket;
     private ConnectToServer connectToServer;
     public OnlineGameClient(Socket socket){
+        instance = this;
+
         this.socket = socket;
         connectToServer = new ConnectToServer(socket);
         runOnlineGame();
@@ -34,5 +38,9 @@ public class OnlineGameClient {
     }
     private void receivedUserRegisterUnsuccessful() {
         Client.getInstance().receivedRegisterResult("no");
+    }
+
+    public static OnlineGameClient getInstance() {
+        return instance;
     }
 }
