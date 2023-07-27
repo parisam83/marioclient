@@ -1,8 +1,7 @@
 package com.parim.view;
 
 import com.parim.Client;
-import com.parim.view.page.ConnectingPage;
-import com.parim.view.page.FailedConnectionPage;
+import com.parim.view.page.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +28,18 @@ public class MainFrame extends JFrame {
     }
     public void setFailedConnectionPage(){
         setPage(new FailedConnectionPage());
+    }
+    public void setAccountPage(){
+        setPage(new AccountPage());
+    }
+    private void setRegisterPage(){
+        setPage(new RegisterPage());
+    }
+    private void setLoginPage(){
+        setPage(new LoginPage());
+    }
+    public void setMenuPage() {
+        setPage(new MenuPage());
     }
 
     private void setPage(JPanel panel) {
@@ -63,5 +74,37 @@ public class MainFrame extends JFrame {
     }
     public void clickedOnOfflineGame(){
         Client.getInstance().clickedOnOfflineGame();
+    }
+
+    public void clickedOnRegister() {
+        setRegisterPage();
+    }
+    public void clickedOnLogin(){
+        setLoginPage();
+    }
+
+    // Errors for login
+    public void emptyValueInputError(){
+        JOptionPane.showMessageDialog(this, "You cannot set your username or password empty!", "EmptyValueInputError", JOptionPane.ERROR_MESSAGE);
+    }
+    public void defaultValueInputError(){
+        JOptionPane.showMessageDialog(this, "You cannot set your username and password as their default value!", "DefaultValueInputError", JOptionPane.ERROR_MESSAGE);
+    }
+    public void unsuccessfulLoginError(){
+        JOptionPane.showMessageDialog(this, "Username or password is not correct!", "UnsuccessfulLoginError", JOptionPane.ERROR_MESSAGE);
+    }
+    public void unsuccessfulRegisterError(){
+        JOptionPane.showMessageDialog(this, "This username is taken. Please try another username.", "UnsuccessfulRegisterError", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void sendRegisterMessage(String username, String password) {
+        Client.getInstance().sendRegisterMessage(username, password);
+    }
+
+    public void receivedRegisterResult(String result) {
+        if (result.equals("no"))
+            unsuccessfulRegisterError();
+        else
+            setMenuPage();
     }
 }

@@ -12,6 +12,7 @@ public class Client {
     private Socket socket;
     private MainFrame mainFrame;
     private boolean clickedOnTryAgain = true, clickedOnOfflineGame = false;
+    private OnlineGameClient onlineGameClient;
     public Client(){
         if (instance != null) return;
         instance = this;
@@ -47,7 +48,9 @@ public class Client {
         new OfflineGameClient();
     }
     private void runOnlineGame(){
-        new OnlineGameClient(socket);
+        // TODO
+        mainFrame.setAccountPage();
+        onlineGameClient = new OnlineGameClient(socket);
     }
 
     public static void main(String[] args) {
@@ -69,5 +72,13 @@ public class Client {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void sendRegisterMessage(String username, String password) {
+        onlineGameClient.sendRegisterMessage(username, password);
+    }
+
+    public void receivedRegisterResult(String result) {
+        MainFrame.getInstance().receivedRegisterResult(result);
     }
 }
