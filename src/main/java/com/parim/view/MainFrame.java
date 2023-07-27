@@ -100,11 +100,16 @@ public class MainFrame extends JFrame {
     public void sendRegisterMessage(String username, String password) {
         Client.getInstance().sendRegisterMessage(username, password);
     }
+    public void sendLoginMessage(String username, String password) {
+        Client.getInstance().sendLoginMessage(username, password);
+    }
 
     public void receivedRegisterResult(String result) {
-        if (result.equals("no"))
-            unsuccessfulRegisterError();
-        else
-            setMenuPage();
+        if (result.equals("no")) unsuccessfulRegisterError();
+        else setMenuPage();
+    }
+    public void receivedLoginResult(String result) {
+        if (result.equals("no")) unsuccessfulLoginError();
+        else setMenuPage();
     }
 }

@@ -76,8 +76,15 @@ public class Client {
     public void sendRegisterMessage(String username, String password) {
         OnlineGameClient.getInstance().sendRegisterMessage(username, password);
     }
+    public void sendLoginMessage(String username, String password) {
+        OnlineGameClient.getInstance().sendLoginMessage(username, password);
+    }
+
 
     public void receivedRegisterResult(String result) {
         MainFrame.getInstance().receivedRegisterResult(result);
+    }
+    public void receivedLoginResult(String result) {
+        MainFrame.getInstance().receivedLoginResult(result);
     }
 }
