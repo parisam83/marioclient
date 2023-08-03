@@ -1,6 +1,7 @@
 package com.parim.view;
 
 import com.parim.Client;
+import com.parim.model.User;
 import com.parim.view.page.*;
 
 import javax.swing.*;
@@ -45,10 +46,6 @@ public class MainFrame extends JFrame {
     private void setPage(JPanel panel) {
         this.setContentPane(panel);
         this.pack();
-        /*this.setLocationRelativeTo(null);
-        this.setVisible(true);
-        panel.requestFocus();
-        panel.setVisible(true);*/
     }
 
     // Getters and Setters
@@ -70,7 +67,7 @@ public class MainFrame extends JFrame {
     }
 
     public void clickedOnTryAgain() {
-        Client.getInstance().clickedOnOnlineGame();
+        Client.getInstance().clickedOnTryConnectingToServer();
     }
     public void clickedOnOfflineGame(){
         Client.getInstance().clickedOnOfflineGame();
@@ -97,11 +94,11 @@ public class MainFrame extends JFrame {
         JOptionPane.showMessageDialog(this, "This username is taken. Please try another username.", "UnsuccessfulRegisterError", JOptionPane.ERROR_MESSAGE);
     }
 
-    public void sendRegisterMessage(String username, String password) {
-        Client.getInstance().sendRegisterMessage(username, password);
+    public void sendRegisterMessage(User user) {
+        Client.getInstance().sendRegisterMessage(user);
     }
-    public void sendLoginMessage(String username, String password) {
-        Client.getInstance().sendLoginMessage(username, password);
+    public void sendLoginMessage(User user) {
+        Client.getInstance().sendLoginMessage(user);
     }
 
     public void receivedRegisterResult(String result) {
@@ -111,5 +108,8 @@ public class MainFrame extends JFrame {
     public void receivedLoginResult(String result) {
         if (result.equals("no")) unsuccessfulLoginError();
         else setMenuPage();
+    }
+    public static boolean isOfflineGame(){
+        return Client.getInstance().isOfflineGame();
     }
 }

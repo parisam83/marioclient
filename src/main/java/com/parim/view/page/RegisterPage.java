@@ -1,5 +1,6 @@
 package com.parim.view.page;
 
+import com.parim.model.User;
 import com.parim.view.MainFrame;
 import com.parim.view.swingObjects.ButtonCreator;
 import com.parim.view.swingObjects.TextFieldCreator;
@@ -14,9 +15,14 @@ public class RegisterPage extends JPanel {
         TextFieldCreator password = new TextFieldCreator(500, "password");
         this.add(password);
 
-        ButtonCreator next = new ButtonCreator(900, 700, "next");
+        ButtonCreator next = new ButtonCreator(900, 700, "Next");
         next.addActionListener(e -> nextClicked(username.getText(), password.getText()));
         this.add(next);
+
+        ButtonCreator back = new ButtonCreator(100, 700, "Back");
+        back.addActionListener(e -> MainFrame.getInstance().setAccountPage());
+        this.add(back);
+
         this.setLayout(null);
         this.setPreferredSize(MainFrame.getDIMENSION());
     }
@@ -27,6 +33,6 @@ public class RegisterPage extends JPanel {
         else if (username.equals("") || password.equals(""))
             MainFrame.getInstance().emptyValueInputError();
         else
-            MainFrame.getInstance().sendRegisterMessage(username, password);
+            MainFrame.getInstance().sendRegisterMessage(new User(username, password));
     }
 }

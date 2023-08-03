@@ -2,8 +2,12 @@ package com.parim;
 
 import com.parim.client.OfflineGameClient;
 import com.parim.client.OnlineGameClient;
+import com.parim.model.User;
 import com.parim.view.MainFrame;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -11,39 +15,32 @@ public class Client {
     private static Client instance;
     private Socket socket;
     private MainFrame mainFrame;
-    private boolean clickedOnTryAgain = true, clickedOnOfflineGame = false;
+    private boolean offlineGame;
     public Client(){
         if (instance != null) return;
         instance = this;
 
         mainFrame = new MainFrame();
-        runClient();
-    }
-
-    public void runClient() {
-        while (socket == null) {
-            sleep(1000);
-            if (clickedOnTryAgain)
-                tryToConnect();
-            if (clickedOnOfflineGame){
-                runOfflineGame();
-                break;
-            }
-        }
-        runOnlineGame();
+        tryToConnect();
     }
 
     public void tryToConnect() {
         mainFrame.setConnectingPage();
-        try {
-            socket = new Socket("localhost", 9000);
-        } catch (IOException e) {
-            clickedOnTryAgain = false;
-            mainFrame.setFailedConnectionPage();
-        }
+        Timer timer = new Timer(1000, e -> {
+            try {
+                socket = new Socket("localhost", 9000);
+                runOnlineGame();
+            } catch (IOException e1) {
+                mainFrame.setFailedConnectionPage();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 
     private void runOfflineGame(){
+        offlineGame = true;
+        mainFrame.setAccountPage();
         new OfflineGameClient();
     }
     private void runOnlineGame(){
@@ -59,25 +56,20 @@ public class Client {
     public static Client getInstance() {
         return instance;
     }
-    public void clickedOnOnlineGame() {
-        clickedOnTryAgain = true;
+    public void clickedOnTryConnectingToServer() {
+        tryToConnect();
     }
     public void clickedOnOfflineGame(){
-        clickedOnOfflineGame = true;
-    }
-    private void sleep(long millis){
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        runOfflineGame();
     }
 
-    public void sendRegisterMessage(String username, String password) {
-        OnlineGameClient.getInstance().sendRegisterMessage(username, password);
+    public void sendRegisterMessage(User user) {
+        if (isOfflineGame()) OfflineGameClient.getInstance().sendRegisterMessage(user);
+        else OnlineGameClient.getInstance().sendRegisterMessage(user);
     }
-    public void sendLoginMessage(String username, String password) {
-        OnlineGameClient.getInstance().sendLoginMessage(username, password);
+    public void sendLoginMessage(User user) {
+        if (isOfflineGame()) OfflineGameClient.getInstance().sendLoginMessage(user);
+        else OnlineGameClient.getInstance().sendLoginMessage(user);
     }
 
 
@@ -86,5 +78,8 @@ public class Client {
     }
     public void receivedLoginResult(String result) {
         MainFrame.getInstance().receivedLoginResult(result);
+    }
+    public boolean isOfflineGame(){
+        return offlineGame;
     }
 }

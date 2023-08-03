@@ -28,9 +28,11 @@ public class MenuPage extends JPanel {
         //startOnlineGame.addActionListener(e -> MainFrame.getInstance().);
         this.add(scoreboard);
 
-        ButtonCreator retryConnectToServer = new ButtonCreator(gap + 120*5, "Connect To Server");
-        //startOnlineGame.addActionListener(e -> MainFrame.getInstance().);
-        this.add(retryConnectToServer);
+        if (MainFrame.isOfflineGame()) {
+            ButtonCreator retryConnectToServer = new ButtonCreator(gap + 120 * 5, "Connect To Server");
+            //startOnlineGame.addActionListener(e -> MainFrame.getInstance().);
+            this.add(retryConnectToServer);
+        }
 
         this.setLayout(null);
         this.setPreferredSize(MainFrame.getDIMENSION());
