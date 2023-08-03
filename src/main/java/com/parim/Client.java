@@ -64,7 +64,7 @@ public class Client {
     }
 
     public void sendRegisterMessage(User user) {
-        if (isOfflineGame()) OfflineGameClient.getInstance().sendRegisterMessage(user);
+        if (isOfflineGame()) System.out.println("HugeBug! :: Registration is not disabled in offline game");
         else OnlineGameClient.getInstance().sendRegisterMessage(user);
     }
     public void sendLoginMessage(User user) {

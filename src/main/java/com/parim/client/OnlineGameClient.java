@@ -2,6 +2,7 @@ package com.parim.client;
 
 import com.parim.Client;
 import com.parim.ConnectToServer;
+import com.parim.access.UserAccess;
 import com.parim.event.Message;
 import com.parim.event.UserEvent;
 import com.parim.model.User;
@@ -12,6 +13,7 @@ public class OnlineGameClient {
     private static OnlineGameClient instance;
     private Socket socket;
     private ConnectToServer connectToServer;
+    private UserAccess userAccess = new UserAccess();
     public OnlineGameClient(Socket socket){
         instance = this;
 
@@ -33,6 +35,7 @@ public class OnlineGameClient {
     }
 
     public void sendRegisterMessage(User user) {
+        userAccess.add(user);
         connectToServer.send(new Message("UserRegisterEvent", new UserEvent(user)));
     }
     public void sendLoginMessage(User user) {

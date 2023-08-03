@@ -12,9 +12,6 @@ public class OfflineGameClient {
     public void sendLoginMessage(User user) {
         // connectToServer.send(new Message("UserLoginEvent", new UserEvent(username, password)));
     }
-    public void sendRegisterMessage(User user) {
-        // connectToServer.send(new Message("UserLoginEvent", new UserEvent(username, password)));
-    }
 
 
     public static OfflineGameClient getInstance() {
