@@ -17,4 +17,5 @@ public class FontLoader {
     }
     public final static Font titleFont = font.deriveFont(60f);
     public final static Font buttonFont = font.deriveFont(40f);
+    public final static Font notificationFont = font.deriveFont(30f);
 }

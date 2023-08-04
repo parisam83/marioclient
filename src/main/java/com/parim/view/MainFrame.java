@@ -42,6 +42,9 @@ public class MainFrame extends JFrame {
     public void setMenuPage() {
         setPage(new MenuPage());
     }
+    public void setNotificationsPage(){
+        setPage(new NotificationsPage());
+    }
 
     private void setPage(JPanel panel) {
         panel.setVisible(true);

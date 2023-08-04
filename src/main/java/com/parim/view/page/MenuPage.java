@@ -27,16 +27,20 @@ public class MenuPage extends JPanel {
         this.add(shop);
 
         ButtonCreator scoreboard = new ButtonCreator(gap + 120*4, "Scoreboard");
-        //startOnlineGame.addActionListener(e -> MainFrame.getInstance().);
+        scoreboard.addActionListener(e -> MainFrame.getInstance().setScoreboardPage());
         this.add(scoreboard);
 
         ButtonCreator exit = new ButtonCreator(gap + 120*5, "Exit");
         exit.addActionListener(e -> exit(0));
         this.add(exit);
 
+        ButtonCreator notifications = new ButtonCreator(900, gap, "Notifications");
+        notifications.addActionListener(e -> MainFrame.getInstance().setNotificationsPage());
+        this.add(notifications);
+
         if (MainFrame.isOfflineGame()) {
             ButtonCreator retryConnectToServer = new ButtonCreator(900, gap + 120 * 5, "Connect To Server");
-            //startOnlineGame.addActionListener(e -> MainFrame.getInstance().);
+            retryConnectToServer.addActionListener(e -> MainFrame.getInstance().clickedOnTryAgain());
             this.add(retryConnectToServer);
         }
 
