@@ -39,6 +39,11 @@ public class MenuPage extends JPanel {
         this.add(notifications);
 
         if (MainFrame.isOfflineGame()) {
+            startOnlineGame.setEnabled(false);
+            chatroom.setEnabled(false);
+            shop.setEnabled(false);
+            notifications.setEnabled(false);
+
             ButtonCreator retryConnectToServer = new ButtonCreator(900, gap + 120 * 5, "Connect To Server");
             retryConnectToServer.addActionListener(e -> MainFrame.getInstance().clickedOnTryAgain());
             this.add(retryConnectToServer);
