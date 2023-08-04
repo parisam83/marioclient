@@ -13,7 +13,6 @@ public class OnlineGameClient {
     private static OnlineGameClient instance;
     private Socket socket;
     private ConnectToServer connectToServer;
-    private UserAccess userAccess = new UserAccess();
     public OnlineGameClient(Socket socket){
         instance = this;
 
@@ -35,7 +34,7 @@ public class OnlineGameClient {
     }
 
     public void sendRegisterMessage(User user) {
-        userAccess.add(user);
+        UserAccess.getInstance().add(user);
         connectToServer.send(new Message("UserRegisterEvent", new UserEvent(user)));
     }
     public void sendLoginMessage(User user) {

@@ -7,13 +7,19 @@ import com.parim.model.User;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class UserAccess {
+    private static UserAccess instance;
     ObjectMapper mapper;
     private final String directory = "database/";
     private final File databaseFile = new File(directory);
+    private ArrayList<User> users = new ArrayList<>();
 
     public UserAccess(){
+        if (instance != null) return;
+        instance = this;
+
         mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
@@ -24,8 +30,34 @@ public class UserAccess {
             throw new RuntimeException(e);
         }
     }
+
+    public void read(){
+        users.clear();
+        for (int i = 1; i <= numberOfUsers(); i++) {
+            try {
+                File file1 = new File(directory + "user" + String.valueOf(i) + ".json");
+                User newUser = mapper.readValue(file1, User.class);
+                users.add(newUser);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public boolean find(User wantingUser){
+        String username = wantingUser.getUsername(), password = wantingUser.getPassword();
+        read();
+        for (User user : users)
+            if (user.getUsername().equals(username) && user.getPassword().equals(password))
+                return true;
+        return false;
+    }
     private int numberOfUsers(){
         if (databaseFile.list() == null) return 0;
         return databaseFile.list().length;
+    }
+
+    public static UserAccess getInstance() {
+        return instance;
     }
 }

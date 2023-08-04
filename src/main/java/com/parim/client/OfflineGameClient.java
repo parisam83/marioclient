@@ -1,16 +1,18 @@
 package com.parim.client;
 
+import com.parim.Client;
+import com.parim.access.UserAccess;
 import com.parim.model.User;
 
 public class OfflineGameClient {
-    // TODO
     private static OfflineGameClient instance;
     public OfflineGameClient() {
         instance = this;
     }
 
     public void sendLoginMessage(User user) {
-        // connectToServer.send(new Message("UserLoginEvent", new UserEvent(username, password)));
+        if (UserAccess.getInstance().find(user)) Client.getInstance().receivedLoginResult("yes");
+        else Client.getInstance().receivedLoginResult("no");
     }
 
 
