@@ -44,7 +44,12 @@ public class MainFrame extends JFrame {
     }
 
     private void setPage(JPanel panel) {
+        panel.setVisible(true);
+        panel.repaint();
+        panel.revalidate();
         this.setContentPane(panel);
+        this.repaint();
+        this.revalidate();
         this.pack();
     }
 

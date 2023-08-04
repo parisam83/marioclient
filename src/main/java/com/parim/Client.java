@@ -6,8 +6,6 @@ import com.parim.model.User;
 import com.parim.view.MainFrame;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -15,27 +13,31 @@ public class Client {
     private static Client instance;
     private Socket socket;
     private MainFrame mainFrame;
-    private boolean offlineGame;
+    private boolean offlineGame, onlineGame;
     public Client(){
         if (instance != null) return;
         instance = this;
 
         mainFrame = new MainFrame();
-        tryToConnect();
+        clickedOnTryConnectingToServer();
     }
 
-    public void tryToConnect() {
+    private void tryToConnect() {
         mainFrame.setConnectingPage();
         Timer timer = new Timer(1000, e -> {
-            try {
-                socket = new Socket("localhost", 9000);
-                runOnlineGame();
-            } catch (IOException e1) {
-                mainFrame.setFailedConnectionPage();
-            }
+            startConnection();
         });
         timer.setRepeats(false);
         timer.start();
+    }
+
+    private void startConnection(){
+        try {
+            socket = new Socket("localhost", 9000);
+            runOnlineGame();
+        } catch (IOException ex) {
+            mainFrame.setFailedConnectionPage();
+        }
     }
 
     private void runOfflineGame(){
@@ -44,9 +46,9 @@ public class Client {
         new OfflineGameClient();
     }
     private void runOnlineGame(){
-        // TODO
+        onlineGame = true;
         mainFrame.setAccountPage();
-        new OnlineGameClient(socket);
+        new Thread(() -> new OnlineGameClient(socket)).start();
     }
 
     public static void main(String[] args) {
