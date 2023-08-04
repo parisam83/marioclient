@@ -45,6 +45,15 @@ public class MainFrame extends JFrame {
     public void setNotificationsPage(){
         setPage(new NotificationsPage());
     }
+    public void setScoreboardPage(){
+        setPage(new ScoreboardPage());
+    }
+    public void setOnlineScoreboardPage(){
+        // TODO
+    }
+    public void setOfflineScoreboardPage(){
+        // TODO
+    }
 
     private void setPage(JPanel panel) {
         panel.setVisible(true);
