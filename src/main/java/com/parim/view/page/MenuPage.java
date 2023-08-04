@@ -5,6 +5,8 @@ import com.parim.view.swingObjects.ButtonCreator;
 
 import javax.swing.*;
 
+import static java.lang.System.exit;
+
 public class MenuPage extends JPanel {
     public MenuPage(){
         int gap = 50;
@@ -28,8 +30,12 @@ public class MenuPage extends JPanel {
         //startOnlineGame.addActionListener(e -> MainFrame.getInstance().);
         this.add(scoreboard);
 
+        ButtonCreator exit = new ButtonCreator(gap + 120*5, "Exit");
+        exit.addActionListener(e -> exit(0));
+        this.add(exit);
+
         if (MainFrame.isOfflineGame()) {
-            ButtonCreator retryConnectToServer = new ButtonCreator(gap + 120 * 5, "Connect To Server");
+            ButtonCreator retryConnectToServer = new ButtonCreator(900, gap + 120 * 5, "Connect To Server");
             //startOnlineGame.addActionListener(e -> MainFrame.getInstance().);
             this.add(retryConnectToServer);
         }

@@ -17,9 +17,6 @@ public class UserAccess {
     private ArrayList<User> users = new ArrayList<>();
 
     public UserAccess(){
-        if (instance != null) return;
-        instance = this;
-
         mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
@@ -58,6 +55,7 @@ public class UserAccess {
     }
 
     public static UserAccess getInstance() {
+        if (instance == null) instance = new UserAccess();
         return instance;
     }
 }

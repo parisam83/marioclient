@@ -59,6 +59,7 @@ public class Client {
         return instance;
     }
     public void clickedOnTryConnectingToServer() {
+        onlineGame = offlineGame = false;
         tryToConnect();
     }
     public void clickedOnOfflineGame(){
