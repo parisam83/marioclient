@@ -23,7 +23,7 @@ public class MenuPage extends JPanel {
         this.add(chatroom);
 
         ButtonCreator shop = new ButtonCreator(gap + 120*3, "Shop");
-        //startOnlineGame.addActionListener(e -> MainFrame.getInstance().);
+        shop.addActionListener(e -> MainFrame.getInstance().setShopPage());
         this.add(shop);
 
         ButtonCreator scoreboard = new ButtonCreator(gap + 120*4, "Scoreboard");
@@ -41,7 +41,6 @@ public class MenuPage extends JPanel {
         if (MainFrame.isOfflineGame()) {
             startOnlineGame.setEnabled(false);
             chatroom.setEnabled(false);
-            shop.setEnabled(false);
             notifications.setEnabled(false);
 
             ButtonCreator retryConnectToServer = new ButtonCreator(900, gap + 120 * 5, "Connect To Server");

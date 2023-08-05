@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = UserEvent.class, name = "UserEvent"),
+        @JsonSubTypes.Type(value = ItemEvent.class, name = "ItemEvent"),
+        @JsonSubTypes.Type(value = BuyItemEvent.class, name = "BuyItemEvent"),
 })
 public interface FormEvent {
 }

@@ -41,7 +41,7 @@ public class NotificationsPage extends JPanel {
     public JButton CreateButton(int x, int y, String title, String message, String type) {
         JButton button = new JButton();
         button.setBounds(x, y, buttonWidth, buttonHeight);
-        button.setText(createText(title, message));
+        button.setText(MainFrame.getInstance().createText(title, message));
         button.setFont(FontLoader.notificationFont);
         button.setFocusable(false);
         button.setHorizontalTextPosition(JButton.CENTER);
@@ -62,11 +62,6 @@ public class NotificationsPage extends JPanel {
         });
 
         return button;
-    }
-
-    private String createText(String title, String message){
-        String joinedText = title + "\n" + message;
-        return "<html>" + joinedText.replaceAll("\\n", "<br>") + "</html>";
     }
 
     private void createPlaces(){

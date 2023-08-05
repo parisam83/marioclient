@@ -1,16 +1,20 @@
 package com.parim.view;
 
 import com.parim.Client;
+import com.parim.event.ItemEvent;
+import com.parim.model.Item;
 import com.parim.model.User;
 import com.parim.view.page.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MainFrame extends JFrame {
     private static MainFrame instance;
     private static final int WIDTH = 1500, HEIGHT = 800;
     private static final Dimension DIMENSION = new Dimension(WIDTH, HEIGHT);
+    private ShopPage shopPage;
     public MainFrame(){
         if (instance != null) return;
         instance = this;
@@ -53,6 +57,9 @@ public class MainFrame extends JFrame {
     }
     public void setOfflineScoreboardPage(){
         // TODO
+    }
+    public void setShopPage(){
+        setPage(shopPage = new ShopPage());
     }
 
     private void setPage(JPanel panel) {
@@ -117,6 +124,9 @@ public class MainFrame extends JFrame {
     public void sendLoginMessage(User user) {
         Client.getInstance().sendLoginMessage(user);
     }
+    public void getItems(){
+        Client.getInstance().sendGetItemsMessage();
+    }
 
     public void receivedRegisterResult(String result) {
         if (result.equals("no")) unsuccessfulRegisterError();
@@ -126,7 +136,17 @@ public class MainFrame extends JFrame {
         if (result.equals("no")) unsuccessfulLoginError();
         else setMenuPage();
     }
+    public void receivedItemEvent(ItemEvent itemEvent){
+        shopPage.loadShop(itemEvent);
+    }
+    public void receivedComboItemEvent(ItemEvent itemEvent){
+        shopPage.loadCombo(itemEvent);
+    }
     public static boolean isOfflineGame(){
         return Client.getInstance().isOfflineGame();
+    }
+    public String createText(String title, String message){
+        String joinedText = title + "\n" + message;
+        return "<html>" + joinedText.replaceAll("\\n", "<br>") + "</html>";
     }
 }
