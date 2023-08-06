@@ -78,7 +78,9 @@ public class Client {
     public void sendGetItemsMessage(){
         OnlineGameClient.getInstance().sendGetItemsMessage();
     }
-
+    public void sendBuyItemMessage(String itemName){
+        OnlineGameClient.getInstance().sendBuyItemMessage(itemName);
+    }
 
     public void receivedRegisterResult(String result) {
         MainFrame.getInstance().receivedRegisterResult(result);

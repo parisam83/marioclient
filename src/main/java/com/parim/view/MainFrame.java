@@ -127,6 +127,9 @@ public class MainFrame extends JFrame {
     public void getItems(){
         Client.getInstance().sendGetItemsMessage();
     }
+    public void sendBuyItemMessage(String itemName){
+        Client.getInstance().sendBuyItemMessage(itemName);
+    }
 
     public void receivedRegisterResult(String result) {
         if (result.equals("no")) unsuccessfulRegisterError();

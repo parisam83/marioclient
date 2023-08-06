@@ -2,6 +2,7 @@ package com.parim.model;
 
 public class User {
     private String username, password;
+    private int coin, diamond;
     public User(){}
     public User(String username, String password){
         this.username = username;

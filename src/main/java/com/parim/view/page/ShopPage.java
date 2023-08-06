@@ -35,10 +35,11 @@ public class ShopPage extends JPanel {
         }
         Image image1 = ImageLoader.getInstance().loadImage(combo.get(0).getName(), 110, 110);
         Image image2 = ImageLoader.getInstance().loadImage(combo.get(1).getName(), 110, 110);
-        int totalPrice = Integer.valueOf(combo.get(0).getCost()) + Integer.valueOf(combo.get(1).getCost());
         ButtonCreator button = new ButtonCreator(lastX, lastY, image1, image2,
-                combo.get(0).getName(), combo.get(1).getName(), String.valueOf(totalPrice));
-        // TODO: button.addActionListener();
+                combo.get(0).getName(), combo.get(1).getName(),
+                combo.get(0).getCost() + " + " + combo.get(1).getCost());
+        button.addActionListener(e -> MainFrame.getInstance().sendBuyItemMessage(combo.get(0).getName()));
+        button.addActionListener(e -> MainFrame.getInstance().sendBuyItemMessage(combo.get(1).getName()));
         this.add(button);
     }
     public void loadShop(ItemEvent itemEvent){
@@ -64,7 +65,7 @@ public class ShopPage extends JPanel {
                 lastY = y = 400;
             }
             ButtonCreator button = new ButtonCreator(x, y, ImageLoader.getInstance().loadImage(item, 220, 220), item, map.get(item));
-            // TODO: button.addActionListener(MainFrame.getInstance().sendItemBuyMessage(item));
+            button.addActionListener(e -> MainFrame.getInstance().sendBuyItemMessage(item));
             this.add(button);
 
             if (MainFrame.isOfflineGame() || !available.contains(item)) button.setEnabled(false);

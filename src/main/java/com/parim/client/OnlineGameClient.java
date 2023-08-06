@@ -3,6 +3,7 @@ package com.parim.client;
 import com.parim.Client;
 import com.parim.ConnectToServer;
 import com.parim.access.UserAccess;
+import com.parim.event.BuyItemEvent;
 import com.parim.event.ItemEvent;
 import com.parim.event.Message;
 import com.parim.event.UserEvent;
@@ -32,6 +33,7 @@ public class OnlineGameClient {
             if (title.equals("UserLoginUnsuccessful")) receivedUserLoginUnsuccessful();
             if (title.equals("ItemEvent")) receivedItemEvent((ItemEvent) serverRespond.getFormEvent());
             if (title.equals("ComboItemEvent")) receivedComboItemEvent((ItemEvent) serverRespond.getFormEvent());
+            if (title.equals("BuyItemEvent")) receivedBuyItemEvent((BuyItemEvent) serverRespond.getFormEvent());
         }
         connectToServer.send(new Message("ClientClosedEvent", null)); // notifies server that client disconnected
     }
@@ -46,6 +48,10 @@ public class OnlineGameClient {
     public void sendGetItemsMessage(){
         connectToServer.send(new Message("ItemEvent", null));
     }
+    public void sendBuyItemMessage(String itemName) {
+        connectToServer.send(new Message("BuyItemEvent", new BuyItemEvent(itemName)));
+    }
+
     private void receivedUserRegisterSuccessful(){
         Client.getInstance().receivedRegisterResult("yes");
     }
@@ -63,6 +69,9 @@ public class OnlineGameClient {
     }
     private void receivedComboItemEvent(ItemEvent itemEvent){
         Client.getInstance().receivedComboItemEvent(itemEvent);
+    }
+    private void receivedBuyItemEvent(BuyItemEvent buyItemEvent){
+        // TODO
     }
     public static OnlineGameClient getInstance() {
         return instance;
