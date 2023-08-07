@@ -4,6 +4,8 @@ import com.parim.Client;
 import com.parim.ConnectToServer;
 import com.parim.access.UserAccess;
 import com.parim.event.*;
+import com.parim.event.chat.block.BlockUserEvent;
+import com.parim.event.chat.block.UnblockUserEvent;
 import com.parim.model.Chat;
 import com.parim.model.User;
 import com.parim.view.MainFrame;
@@ -35,6 +37,7 @@ public class OnlineGameClient {
             if (title.equals("BuyItemEvent")) receivedBuyItemEvent((BuyItemEvent) serverRespond.getFormEvent());
             if (title.equals("ChatListEvent")) receivedChatListEvent((ChatListEvent) serverRespond.getFormEvent());
             if (title.equals("MessageEvent")) receivedMessageEvent((MessageEvent) serverRespond.getFormEvent());
+            if (title.equals("ListOfBlockedUsernamesEvent")) receivedListOfBlockedUsernamesEvent((ListOfBlockedUsernamesEvent) serverRespond.getFormEvent());
         }
         connectToServer.send(new Message("ClientClosedEvent", null)); // notifies server that client disconnected
     }
@@ -55,11 +58,20 @@ public class OnlineGameClient {
     public void sendChatListRequest(){
         connectToServer.send(new Message("ChatListRequest", null));
     }
-    public void searchUserMessages(String username){
+    public void requestUserMessages(String username){
         connectToServer.send(new Message("MessageEvent", new MessageEvent(new Chat(username, ""))));
     }
     public void sendMessage(String sender, String receiver, String message){
         connectToServer.send(new Message("SendMessageEvent", new SendMessageEvent(sender, receiver, message)));
+    }
+    public void requestListOfBlockedUsernames(){
+        connectToServer.send(new Message("ListOfBlockedUsernamesEvent", null));
+    }
+    public void sendBlockUserEvent(String username){
+        connectToServer.send(new Message("BlockUserEvent", new BlockUserEvent(username)));
+    }
+    public void sendUnblockUserEvent(String username){
+        connectToServer.send(new Message("UnblockUserEvent", new UnblockUserEvent(username)));
     }
 
     private void receivedUserRegisterSuccessful(){
@@ -88,6 +100,9 @@ public class OnlineGameClient {
     }
     private void receivedMessageEvent(MessageEvent messageEvent){
         MainFrame.getInstance().receivedMessageEvent(messageEvent.getChat());
+    }
+    private void receivedListOfBlockedUsernamesEvent(ListOfBlockedUsernamesEvent listOfBlockedUsernamesEvent){
+        MainFrame.getInstance().showBlockedUsernames(listOfBlockedUsernamesEvent.getBlockedUsernames());
     }
     public static OnlineGameClient getInstance() {
         return instance;

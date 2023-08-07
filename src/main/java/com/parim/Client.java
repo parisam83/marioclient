@@ -85,9 +85,6 @@ public class Client {
     public void sendChatListRequest(){
         OnlineGameClient.getInstance().sendChatListRequest();
     }
-    public void searchUserMessages(String username){
-        OnlineGameClient.getInstance().searchUserMessages(username);
-    }
     public void sendMessage(String sender, String receiver, String message){
         OnlineGameClient.getInstance().sendMessage(sender, receiver, message);
     }

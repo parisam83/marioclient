@@ -1,6 +1,7 @@
 package com.parim.view;
 
 import com.parim.Client;
+import com.parim.client.OnlineGameClient;
 import com.parim.event.ChatListEvent;
 import com.parim.event.ItemEvent;
 import com.parim.model.Chat;
@@ -17,6 +18,7 @@ public class MainFrame extends JFrame {
     private static final Dimension DIMENSION = new Dimension(WIDTH, HEIGHT);
     private ShopPage shopPage;
     private ChatPage chatPage;
+    private ListOfBlockedUsernamesPage listOfBlockedUsernamesPage;
     public MainFrame(){
         if (instance != null) return;
         instance = this;
@@ -69,6 +71,10 @@ public class MainFrame extends JFrame {
     public void setPVChatPage(String me, String theOther, ArrayList<String> messages){
         setPage(new PVChatPage(me, theOther, messages));
     }
+    public void setListOfBlockedUsernamesPage(){
+        OnlineGameClient.getInstance().requestListOfBlockedUsernames();
+        setPage(listOfBlockedUsernamesPage = new ListOfBlockedUsernamesPage());
+    }
 
     private void setPage(JPanel panel) {
         panel.setVisible(true);
@@ -78,6 +84,11 @@ public class MainFrame extends JFrame {
         this.repaint();
         this.revalidate();
         this.pack();
+    }
+    public void showBlockedUsernames(ArrayList<String> blockedUsernames){
+        listOfBlockedUsernamesPage.showBlockedUsernames(blockedUsernames);
+        listOfBlockedUsernamesPage.repaint();
+        listOfBlockedUsernamesPage.revalidate();
     }
 
     // Getters and Setters
@@ -111,14 +122,14 @@ public class MainFrame extends JFrame {
     public void clickedOnLogin(){
         setLoginPage();
     }
-    public void searchUserMessages(String username){
-        Client.getInstance().searchUserMessages(username);
+    public void requestUserMessages(String username){
+        OnlineGameClient.getInstance().requestUserMessages(username);
     }
     public void blockUser(String username){
-        // TODO
+        OnlineGameClient.getInstance().sendBlockUserEvent(username);
     }
     public void unblockUser(String username){
-        // TODO
+        OnlineGameClient.getInstance().sendUnblockUserEvent(username);
     }
     public void sendChatListRequest(){
         Client.getInstance().sendChatListRequest();
@@ -161,12 +172,18 @@ public class MainFrame extends JFrame {
     }
     public void receivedItemEvent(ItemEvent itemEvent){
         shopPage.loadShop(itemEvent);
+        shopPage.repaint();
+        shopPage.revalidate();
     }
     public void receivedComboItemEvent(ItemEvent itemEvent){
         shopPage.loadCombo(itemEvent);
+        shopPage.repaint();
+        shopPage.revalidate();
     }
     public void receivedChatListEvent(ChatListEvent chatListEvent){
         chatPage.loadChatList(chatListEvent.getChatList());
+        chatPage.repaint();
+        chatPage.revalidate();
     }
     public void receivedMessageEvent(Chat chat){
         setPVChatPage(chat.getUsername2(), chat.getUsername1(), chat.getMessages());
