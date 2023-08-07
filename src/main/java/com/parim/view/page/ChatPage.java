@@ -13,7 +13,11 @@ public class ChatPage extends JPanel {
         this.add(back);
 
         ButtonCreator search = new ButtonCreator(0, 0, 500, 100, "Search");
-        search.addActionListener(e -> MainFrame.getInstance().requestUserMessages(JOptionPane.showInputDialog("Search username: ")));
+        search.addActionListener(e -> {
+            String ans = JOptionPane.showInputDialog("Search username: ");
+            if (ans == null || ans.equals("")) MainFrame.getInstance().setChatPage();
+            else MainFrame.getInstance().requestUserMessages(ans);
+        });
         this.add(search);
 
         ButtonCreator block = new ButtonCreator(500, 0, 500, 100,"Block/Unblock");

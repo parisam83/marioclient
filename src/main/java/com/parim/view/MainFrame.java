@@ -19,6 +19,7 @@ public class MainFrame extends JFrame {
     private ShopPage shopPage;
     private ChatPage chatPage;
     private ListOfBlockedUsernamesPage listOfBlockedUsernamesPage;
+    private String onChatWith;
     public MainFrame(){
         if (instance != null) return;
         instance = this;
@@ -109,6 +110,10 @@ public class MainFrame extends JFrame {
         return instance;
     }
 
+    public void setOnChatWith(String onChatWith) {
+        this.onChatWith = onChatWith;
+    }
+
     public void clickedOnTryAgain() {
         Client.getInstance().clickedOnTryConnectingToServer();
     }
@@ -123,6 +128,8 @@ public class MainFrame extends JFrame {
         setLoginPage();
     }
     public void requestUserMessages(String username){
+        onChatWith = username;
+        System.out.println(onChatWith);
         OnlineGameClient.getInstance().requestUserMessages(username);
     }
     public void blockUser(String username){
@@ -181,13 +188,20 @@ public class MainFrame extends JFrame {
         shopPage.revalidate();
     }
     public void receivedChatListEvent(ChatListEvent chatListEvent){
+        System.out.println("receivedChatListEvent");
+        System.out.println(chatListEvent.getChatList());
         chatPage.loadChatList(chatListEvent.getChatList());
         chatPage.repaint();
         chatPage.revalidate();
     }
     public void receivedMessageEvent(Chat chat){
-        setPVChatPage(chat.getUsername2(), chat.getUsername1(), chat.getMessages());
-        // chatPage.loadChat();
+        System.out.println(chat.getUsername1() + ", " + chat.getUsername2());
+        System.out.println("onchatwith " + onChatWith);
+        if (onChatWith == null) return;
+        if (onChatWith.equals(chat.getUsername1()))
+            setPVChatPage(chat.getUsername2(), chat.getUsername1(), chat.getMessages());
+        else if (onChatWith.equals(chat.getUsername2()))
+            setPVChatPage(chat.getUsername1(), chat.getUsername2(), chat.getMessages());
     }
     public void sendMessage(String sender, String receiver, String message){
         Client.getInstance().sendMessage(sender, receiver, message);

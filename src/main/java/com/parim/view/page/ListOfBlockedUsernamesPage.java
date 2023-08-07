@@ -23,7 +23,7 @@ public class ListOfBlockedUsernamesPage extends JPanel {
             int index = blockedUsernames.indexOf(username);
             setPosition(index);
             ButtonCreator button = new ButtonCreator(x, y, width, height, username);
-            button.setEnabled(false);
+            button.addActionListener(e -> MainFrame.getInstance().requestUserMessages(username));
             this.add(button);
         }
     }
