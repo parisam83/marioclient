@@ -2,6 +2,7 @@ package com.parim;
 
 import com.parim.client.OfflineGameClient;
 import com.parim.client.OnlineGameClient;
+import com.parim.event.ChatListEvent;
 import com.parim.event.ItemEvent;
 import com.parim.model.User;
 import com.parim.view.MainFrame;
@@ -81,6 +82,15 @@ public class Client {
     public void sendBuyItemMessage(String itemName){
         OnlineGameClient.getInstance().sendBuyItemMessage(itemName);
     }
+    public void sendChatListRequest(){
+        OnlineGameClient.getInstance().sendChatListRequest();
+    }
+    public void searchUserMessages(String username){
+        OnlineGameClient.getInstance().searchUserMessages(username);
+    }
+    public void sendMessage(String sender, String receiver, String message){
+        OnlineGameClient.getInstance().sendMessage(sender, receiver, message);
+    }
 
     public void receivedRegisterResult(String result) {
         MainFrame.getInstance().receivedRegisterResult(result);
@@ -93,6 +103,9 @@ public class Client {
     }
     public void receivedComboItemEvent(ItemEvent itemEvent) {
         MainFrame.getInstance().receivedComboItemEvent(itemEvent);
+    }
+    public void receivedChatListEvent(ChatListEvent chatListEvent){
+        MainFrame.getInstance().receivedChatListEvent(chatListEvent);
     }
     public boolean isOfflineGame(){
         return offlineGame;

@@ -3,11 +3,10 @@ package com.parim.client;
 import com.parim.Client;
 import com.parim.ConnectToServer;
 import com.parim.access.UserAccess;
-import com.parim.event.BuyItemEvent;
-import com.parim.event.ItemEvent;
-import com.parim.event.Message;
-import com.parim.event.UserEvent;
+import com.parim.event.*;
+import com.parim.model.Chat;
 import com.parim.model.User;
+import com.parim.view.MainFrame;
 
 import java.net.Socket;
 
@@ -34,6 +33,8 @@ public class OnlineGameClient {
             if (title.equals("ItemEvent")) receivedItemEvent((ItemEvent) serverRespond.getFormEvent());
             if (title.equals("ComboItemEvent")) receivedComboItemEvent((ItemEvent) serverRespond.getFormEvent());
             if (title.equals("BuyItemEvent")) receivedBuyItemEvent((BuyItemEvent) serverRespond.getFormEvent());
+            if (title.equals("ChatListEvent")) receivedChatListEvent((ChatListEvent) serverRespond.getFormEvent());
+            if (title.equals("MessageEvent")) receivedMessageEvent((MessageEvent) serverRespond.getFormEvent());
         }
         connectToServer.send(new Message("ClientClosedEvent", null)); // notifies server that client disconnected
     }
@@ -50,6 +51,15 @@ public class OnlineGameClient {
     }
     public void sendBuyItemMessage(String itemName) {
         connectToServer.send(new Message("BuyItemEvent", new BuyItemEvent(itemName)));
+    }
+    public void sendChatListRequest(){
+        connectToServer.send(new Message("ChatListRequest", null));
+    }
+    public void searchUserMessages(String username){
+        connectToServer.send(new Message("MessageEvent", new MessageEvent(new Chat(username, ""))));
+    }
+    public void sendMessage(String sender, String receiver, String message){
+        connectToServer.send(new Message("SendMessageEvent", new SendMessageEvent(sender, receiver, message)));
     }
 
     private void receivedUserRegisterSuccessful(){
@@ -72,6 +82,12 @@ public class OnlineGameClient {
     }
     private void receivedBuyItemEvent(BuyItemEvent buyItemEvent){
         // TODO
+    }
+    private void receivedChatListEvent(ChatListEvent chatListEvent){
+        Client.getInstance().receivedChatListEvent(chatListEvent);
+    }
+    private void receivedMessageEvent(MessageEvent messageEvent){
+        MainFrame.getInstance().receivedMessageEvent(messageEvent.getChat());
     }
     public static OnlineGameClient getInstance() {
         return instance;

@@ -19,7 +19,7 @@ public class MenuPage extends JPanel {
         this.add(startOfflineGame);
 
         ButtonCreator chatroom = new ButtonCreator(gap + 120*2, "Chat Room");
-        //startOnlineGame.addActionListener(e -> MainFrame.getInstance().);
+        chatroom.addActionListener(e -> MainFrame.getInstance().setChatPage());
         this.add(chatroom);
 
         ButtonCreator shop = new ButtonCreator(gap + 120*3, "Shop");

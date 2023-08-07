@@ -23,6 +23,14 @@ public class ButtonCreator extends JButton {
         this.setHorizontalTextPosition(JButton.CENTER);
         this.setVerticalTextPosition(JButton.BOTTOM);
     }
+    public ButtonCreator(int x, int y, int width, int height, String text){
+        this.setText(text);
+        this.setFont(FontLoader.buttonFont);
+        this.setBounds(x, y, width, height);
+        this.setFocusable(false);
+        this.setHorizontalTextPosition(JButton.CENTER);
+        this.setVerticalTextPosition(JButton.BOTTOM);
+    }
     public ButtonCreator(int x, int y, Image image, String name, String price){
         this.setIcon(new ImageIcon(image));
         this.setText(name + " :: " + price);

@@ -1,8 +1,9 @@
 package com.parim.view;
 
 import com.parim.Client;
+import com.parim.event.ChatListEvent;
 import com.parim.event.ItemEvent;
-import com.parim.model.Item;
+import com.parim.model.Chat;
 import com.parim.model.User;
 import com.parim.view.page.*;
 
@@ -15,6 +16,7 @@ public class MainFrame extends JFrame {
     private static final int WIDTH = 1500, HEIGHT = 800;
     private static final Dimension DIMENSION = new Dimension(WIDTH, HEIGHT);
     private ShopPage shopPage;
+    private ChatPage chatPage;
     public MainFrame(){
         if (instance != null) return;
         instance = this;
@@ -61,6 +63,12 @@ public class MainFrame extends JFrame {
     public void setShopPage(){
         setPage(shopPage = new ShopPage());
     }
+    public void setChatPage(){
+        setPage(chatPage = new ChatPage());
+    }
+    public void setPVChatPage(String me, String theOther, ArrayList<String> messages){
+        setPage(new PVChatPage(me, theOther, messages));
+    }
 
     private void setPage(JPanel panel) {
         panel.setVisible(true);
@@ -102,6 +110,18 @@ public class MainFrame extends JFrame {
     }
     public void clickedOnLogin(){
         setLoginPage();
+    }
+    public void searchUserMessages(String username){
+        Client.getInstance().searchUserMessages(username);
+    }
+    public void blockUser(String username){
+        // TODO
+    }
+    public void unblockUser(String username){
+        // TODO
+    }
+    public void sendChatListRequest(){
+        Client.getInstance().sendChatListRequest();
     }
 
     // Errors for login
@@ -145,6 +165,17 @@ public class MainFrame extends JFrame {
     public void receivedComboItemEvent(ItemEvent itemEvent){
         shopPage.loadCombo(itemEvent);
     }
+    public void receivedChatListEvent(ChatListEvent chatListEvent){
+        chatPage.loadChatList(chatListEvent.getChatList());
+    }
+    public void receivedMessageEvent(Chat chat){
+        setPVChatPage(chat.getUsername2(), chat.getUsername1(), chat.getMessages());
+        // chatPage.loadChat();
+    }
+    public void sendMessage(String sender, String receiver, String message){
+        Client.getInstance().sendMessage(sender, receiver, message);
+    }
+
     public static boolean isOfflineGame(){
         return Client.getInstance().isOfflineGame();
     }
