@@ -1,4 +1,4 @@
-package com.parim.view.page;
+package com.parim.view.page.notification;
 
 import com.parim.event.notification.NotificationEvent;
 import com.parim.model.Notification;

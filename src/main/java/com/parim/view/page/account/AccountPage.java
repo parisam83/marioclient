@@ -1,4 +1,4 @@
-package com.parim.view.page;
+package com.parim.view.page.account;
 
 import com.parim.view.MainFrame;
 import com.parim.view.swingObjects.ButtonCreator;

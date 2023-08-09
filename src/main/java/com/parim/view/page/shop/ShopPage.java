@@ -1,4 +1,4 @@
-package com.parim.view.page;
+package com.parim.view.page.shop;
 
 import com.parim.event.ItemEvent;
 import com.parim.model.Item;

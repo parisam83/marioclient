@@ -1,4 +1,4 @@
-package com.parim.view.page;
+package com.parim.view.page.account;
 
 import com.parim.model.User;
 import com.parim.view.MainFrame;
@@ -7,8 +7,8 @@ import com.parim.view.swingObjects.TextFieldCreator;
 
 import javax.swing.*;
 
-public class LoginPage extends JPanel {
-    public LoginPage(){
+public class RegisterPage extends JPanel {
+    public RegisterPage(){
         TextFieldCreator username = new TextFieldCreator(300, "username");
         this.add(username);
 
@@ -33,6 +33,6 @@ public class LoginPage extends JPanel {
         else if (username.equals("") || password.equals(""))
             MainFrame.getInstance().emptyValueInputError();
         else
-            MainFrame.getInstance().sendLoginMessage(new User(username, password));
+            MainFrame.getInstance().sendRegisterMessage(new User(username, password));
     }
 }
