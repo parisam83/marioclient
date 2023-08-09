@@ -6,7 +6,11 @@ import com.parim.access.UserAccess;
 import com.parim.event.*;
 import com.parim.event.chat.block.BlockUserEvent;
 import com.parim.event.chat.block.UnblockUserEvent;
+import com.parim.event.notification.NotificationEvent;
+import com.parim.event.notification.UserNotifications;
+import com.parim.event.room.RoomEvent;
 import com.parim.model.Chat;
+import com.parim.model.Room;
 import com.parim.model.User;
 import com.parim.view.MainFrame;
 
@@ -38,10 +42,43 @@ public class OnlineGameClient {
             if (title.equals("ChatListEvent")) receivedChatListEvent((ChatListEvent) serverRespond.getFormEvent());
             if (title.equals("MessageEvent")) receivedMessageEvent((MessageEvent) serverRespond.getFormEvent());
             if (title.equals("ListOfBlockedUsernamesEvent")) receivedListOfBlockedUsernamesEvent((ListOfBlockedUsernamesEvent) serverRespond.getFormEvent());
+            if (title.equals("RoomEvent")) receivedRoomEvent((RoomEvent) serverRespond.getFormEvent());
+            if (title.equals("RemoveFromRoom")) receivedRemoveFromRoom((RoomEvent) serverRespond.getFormEvent());
+            if (title.equals("NotificationEvent")) receivedNotificationEvent((NotificationEvent) serverRespond.getFormEvent());
+            if (title.equals("UserNotifications")) receivedUserNotifications((UserNotifications) serverRespond.getFormEvent());
+            if (title.equals("RunRoomGame")) receivedRunRoomGame((RoomEvent) serverRespond.getFormEvent());
+            if (title.equals("StartRoomGame")) startRoomGame((RoomEvent) serverRespond.getFormEvent());
         }
         connectToServer.send(new Message("ClientClosedEvent", null)); // notifies server that client disconnected
     }
 
+    private void startRoomGame(RoomEvent roomEvent) {
+        MainFrame.getInstance().startRoomGame(roomEvent);
+    }
+
+    private void receivedRunRoomGame(RoomEvent roomEvent) {
+        MainFrame.getInstance().showRunRoomGame(roomEvent);
+    }
+
+    private void receivedUserNotifications(UserNotifications userNotifications) {
+        MainFrame.getInstance().setNotificationsPage(userNotifications);
+    }
+
+    private void receivedNotificationEvent(NotificationEvent notificationEvent) {
+        System.out.println("receivedNotificationEvent");
+        System.out.println(notificationEvent.getTitle());
+        System.out.println(notificationEvent.getMessage());
+        System.out.println(notificationEvent.getType() + "\n");
+        MainFrame.getInstance().showNotification(notificationEvent);
+    }
+
+    private void receivedRemoveFromRoom(RoomEvent roomEvent) {
+        MainFrame.getInstance().showRemoveFromRoom(roomEvent);
+    }
+
+    public void receivedRoomEvent(RoomEvent roomEvent){
+        MainFrame.getInstance().receivedRoomEvent(roomEvent);
+    }
     public void sendRegisterMessage(User user) {
         UserAccess.getInstance().add(user);
         connectToServer.send(new Message("UserRegisterEvent", new UserEvent(user)));
@@ -72,6 +109,12 @@ public class OnlineGameClient {
     }
     public void sendUnblockUserEvent(String username){
         connectToServer.send(new Message("UnblockUserEvent", new UnblockUserEvent(username)));
+    }
+    public void createNewRoom(String password){
+        connectToServer.send(new Message("NewRoomEvent", new RoomEvent(new Room(password))));
+    }
+    public void joinRoom(String id, String password){
+        connectToServer.send(new Message("JoinRoomEvent", new RoomEvent(new Room(id, password))));
     }
 
     private void receivedUserRegisterSuccessful(){
@@ -106,5 +149,32 @@ public class OnlineGameClient {
     }
     public static OnlineGameClient getInstance() {
         return instance;
+    }
+
+    public void sendInviteLink(String username, Room room) {
+        RoomEvent roomEvent = new RoomEvent(room, username);
+        connectToServer.send(new Message("InviteToRoom", roomEvent));
+    }
+
+    public void removeUserFromRoom(String userToRemove, Room room) {
+        RoomEvent roomEvent = new RoomEvent(room, userToRemove);
+        connectToServer.send(new Message("RemoveFromRoom", roomEvent));
+    }
+
+    public void requestUserNotifications() {
+        connectToServer.send(new Message("UserNotifications", null));
+    }
+
+    public void setNewAssistant(String newAssistant, Room room) {
+        RoomEvent roomEvent = new RoomEvent(room, newAssistant);
+        connectToServer.send(new Message("AddNewAssistant", roomEvent));
+    }
+
+    public void runRoomGame(Room room) {
+        connectToServer.send(new Message("RunRoomGame", new RoomEvent(room)));
+    }
+
+    public void sendVerdictRunRoom(RoomEvent roomEvent) {
+        connectToServer.send(new Message("VerdictRunRoom", roomEvent));
     }
 }

@@ -1,26 +1,30 @@
 package com.parim.view.page;
 
+import com.parim.event.notification.NotificationEvent;
 import com.parim.model.Notification;
 import com.parim.view.MainFrame;
 import com.parim.view.loaders.FontLoader;
+import com.parim.view.swingObjects.ButtonCreator;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
 public class NotificationsPage extends JPanel {
-    private static NotificationsPage instance;
     private final int buttonWidth = 500, buttonHeight = 100;
     private ArrayList<Notification> places = new ArrayList<>();
     private ArrayList<JButton> notifications = new ArrayList<>();
-    public NotificationsPage(){
-        if (instance != null) return;
-        instance = this;
+    public NotificationsPage(ArrayList<NotificationEvent> notifications){
         createPlaces();
 
-        for (int i = 0 ; i < places.size(); i++) {
-            createNotification("Mohammad Brk " + i, "Hi. This is a 40 character sentence for.", "Chat");
+        if (notifications != null) {
+            for (NotificationEvent notificationEvent : notifications)
+                createNotification(notificationEvent.getTitle(), notificationEvent.getMessage(), notificationEvent.getType());
         }
+
+        ButtonCreator back = new ButtonCreator(1100, 650, "Back");
+        back.addActionListener(e -> MainFrame.getInstance().setMenuPage());
+        this.add(back);
 
         this.setLayout(null);
         this.setPreferredSize(MainFrame.getDIMENSION());
@@ -38,7 +42,7 @@ public class NotificationsPage extends JPanel {
         this.add(button);
     }
 
-    public JButton CreateButton(int x, int y, String title, String message, String type) {
+    private JButton CreateButton(int x, int y, String title, String message, String type) {
         JButton button = new JButton();
         button.setBounds(x, y, buttonWidth, buttonHeight);
         button.setText(MainFrame.getInstance().createText(title, message));
@@ -51,10 +55,10 @@ public class NotificationsPage extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                    // TODO
-                    if (type.equals("Chat")) System.out.println("going to " + title + "'s chat...");
+                    if (type.equals("Chat")) MainFrame.getInstance().requestUserMessages(title);
 //                    if (type.equals("Friend"))
 //                    if (type.equals("Game"))
+//                    if (type.equals("Room"))
 //                    if (type.equals("Item"))
                 }
                 if (SwingUtilities.isRightMouseButton(e)) removePlace(button);
@@ -79,9 +83,9 @@ public class NotificationsPage extends JPanel {
     }
     private void removePlace(JButton button){
         findPlace(button).setButton(null);
-        instance.remove(button);
-        instance.repaint();
-        instance.revalidate();
+        this.remove(button);
+        this.repaint();
+        this.revalidate();
     }
     private Notification findPlace(JButton button){
         for (Notification place : places)

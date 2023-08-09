@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.parim.event.chat.block.BlockUserEvent;
 import com.parim.event.chat.block.UnblockUserEvent;
+import com.parim.event.notification.NotificationEvent;
+import com.parim.event.notification.UserNotifications;
+import com.parim.event.room.RoomEvent;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -19,6 +22,9 @@ import com.parim.event.chat.block.UnblockUserEvent;
         @JsonSubTypes.Type(value = ListOfBlockedUsernamesEvent.class, name = "ListOfBlockedUsernamesEvent"),
         @JsonSubTypes.Type(value = BlockUserEvent.class, name = "BlockUserEvent"),
         @JsonSubTypes.Type(value = UnblockUserEvent.class, name = "UnblockUserEvent"),
+        @JsonSubTypes.Type(value = RoomEvent.class, name = "RoomEvent"),
+        @JsonSubTypes.Type(value = NotificationEvent.class, name = "NotificationEvent"),
+        @JsonSubTypes.Type(value = UserNotifications.class, name = "UserNotifications"),
 })
 public interface FormEvent {
 }

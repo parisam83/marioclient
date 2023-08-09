@@ -35,8 +35,12 @@ public class MenuPage extends JPanel {
         this.add(exit);
 
         ButtonCreator notifications = new ButtonCreator(900, gap, "Notifications");
-        notifications.addActionListener(e -> MainFrame.getInstance().setNotificationsPage());
+        notifications.addActionListener(e -> MainFrame.getInstance().requestUserNotifications());
         this.add(notifications);
+
+        ButtonCreator rooms = new ButtonCreator(900, gap + 120, "Rooms");
+        rooms.addActionListener(e -> MainFrame.getInstance().setRoomsPage());
+        this.add(rooms);
 
         if (MainFrame.isOfflineGame()) {
             startOnlineGame.setEnabled(false);

@@ -35,7 +35,7 @@ public class Client {
 
     private void startConnection(){
         try {
-            socket = new Socket("localhost", 9000);
+            socket = new Socket("localhost", 9001);
             runOnlineGame();
         } catch (IOException ex) {
             mainFrame.setFailedConnectionPage();
