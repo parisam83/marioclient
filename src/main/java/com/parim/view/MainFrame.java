@@ -2,11 +2,12 @@ package com.parim.view;
 
 import com.parim.Client;
 import com.parim.client.OnlineGameClient;
-import com.parim.event.ChatListEvent;
-import com.parim.event.ItemEvent;
+import com.parim.event.chat.chatList.ChatListEvent;
+import com.parim.event.shop.ItemEvent;
 import com.parim.event.notification.NotificationEvent;
 import com.parim.event.notification.UserNotifications;
 import com.parim.event.room.RoomEvent;
+import com.parim.event.shop.UserShopEvent;
 import com.parim.model.Chat;
 import com.parim.model.Room;
 import com.parim.model.User;
@@ -215,10 +216,13 @@ public class MainFrame extends JFrame {
         Client.getInstance().sendLoginMessage(user);
     }
     public void getItems(){
-        Client.getInstance().sendGetItemsMessage();
+        OnlineGameClient.getInstance().sendGetItemsMessage();
     }
     public void sendBuyItemMessage(String itemName){
-        Client.getInstance().sendBuyItemMessage(itemName);
+        OnlineGameClient.getInstance().sendBuyItemMessage(itemName);
+    }
+    public void sendComboBuyItemMessage(String item1, String item2){
+        OnlineGameClient.getInstance().sendComboBuyItemMessage(item1, item2);
     }
 
     public void receivedRegisterResult(String result) {
@@ -342,5 +346,13 @@ public class MainFrame extends JFrame {
             }
         });
         timer.start();
+    }
+
+    public void showUserShopEvent(UserShopEvent userShopEvent) {
+        shopPage.updateUserShopData(userShopEvent);
+    }
+
+    public void showSuccessfulBuy() {
+        JOptionPane.showMessageDialog(this, "Item bought successfully.", "Successful Buy Item", JOptionPane.INFORMATION_MESSAGE);
     }
 }

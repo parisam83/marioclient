@@ -1,8 +1,10 @@
 package com.parim.view.page.shop;
 
-import com.parim.event.ItemEvent;
+import com.parim.event.shop.ItemEvent;
+import com.parim.event.shop.UserShopEvent;
 import com.parim.model.Item;
 import com.parim.view.MainFrame;
+import com.parim.view.loaders.FontLoader;
 import com.parim.view.loaders.ImageLoader;
 import com.parim.view.swingObjects.ButtonCreator;
 
@@ -13,6 +15,7 @@ import java.util.HashMap;
 
 public class ShopPage extends JPanel {
     private int lastX = -1, lastY = -1;
+    private int coins, diamond;
     public ShopPage(){
         MainFrame.getInstance().getItems();
 
@@ -20,7 +23,7 @@ public class ShopPage extends JPanel {
         this.setPreferredSize(MainFrame.getDIMENSION());
     }
     public void loadCombo(ItemEvent itemEvent){
-        ArrayList<Item> combo = itemEvent.getAvailableItems();
+        ArrayList<Item> combo = itemEvent.getAllItems();
         if (lastY == 20){
             if (lastX < 5 * 250){
                 lastX += 250;
@@ -38,11 +41,20 @@ public class ShopPage extends JPanel {
         ButtonCreator button = new ButtonCreator(lastX, lastY, image1, image2,
                 combo.get(0).getName(), combo.get(1).getName(),
                 combo.get(0).getCost() + " + " + combo.get(1).getCost());
-        button.addActionListener(e -> MainFrame.getInstance().sendBuyItemMessage(combo.get(0).getName()));
-        button.addActionListener(e -> MainFrame.getInstance().sendBuyItemMessage(combo.get(1).getName()));
+        button.addActionListener(e -> {
+            MainFrame.getInstance().sendComboBuyItemMessage(combo.get(0).getName(), combo.get(1).getName());
+        });
+        if (itemEvent.getAvailableItems() == null || itemEvent.getAvailableItems().isEmpty()) button.setEnabled(false);
+        else button.setEnabled(true);
         this.add(button);
     }
     public void loadShop(ItemEvent itemEvent){
+        this.removeAll();
+
+        ButtonCreator back = new ButtonCreator(1000, 650, "Back");
+        back.addActionListener(e -> MainFrame.getInstance().setMenuPage());
+        this.add(back);
+
         ArrayList<String> available = new ArrayList<>(), all = new ArrayList<>();
         HashMap<String, String> map = new HashMap<>();
 
@@ -71,5 +83,17 @@ public class ShopPage extends JPanel {
             if (MainFrame.isOfflineGame() || !available.contains(item)) button.setEnabled(false);
             else button.setEnabled(true);
         }
+    }
+    public void updateUserShopData(UserShopEvent userShopEvent){
+        this.coins = userShopEvent.getCoins();
+        this.diamond = userShopEvent.getDiamond();
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        g.setFont(FontLoader.notificationFont);
+        g.drawString("coins: " + coins, 1350, 650);
+        g.drawString("diamonds: " + diamond, 1350, 700);
     }
 }

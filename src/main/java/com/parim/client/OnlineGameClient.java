@@ -13,7 +13,9 @@ import com.parim.event.notification.NotificationEvent;
 import com.parim.event.notification.UserNotifications;
 import com.parim.event.room.RoomEvent;
 import com.parim.event.shop.BuyItemEvent;
+import com.parim.event.shop.ComboBuyItemEvent;
 import com.parim.event.shop.ItemEvent;
+import com.parim.event.shop.UserShopEvent;
 import com.parim.event.user.UserEvent;
 import com.parim.model.Chat;
 import com.parim.model.Message;
@@ -27,6 +29,7 @@ public class OnlineGameClient {
     private static OnlineGameClient instance;
     private Socket socket;
     private ConnectToServer connectToServer;
+    private User user;
     public OnlineGameClient(Socket socket){
         instance = this;
 
@@ -55,8 +58,17 @@ public class OnlineGameClient {
             if (title.equals("UserNotifications")) receivedUserNotifications((UserNotifications) serverRespond.getFormEvent());
             if (title.equals("RunRoomGame")) receivedRunRoomGame((RoomEvent) serverRespond.getFormEvent());
             if (title.equals("StartRoomGame")) startRoomGame((RoomEvent) serverRespond.getFormEvent());
+            if (title.equals("UserShopEvent")) userShopEvent((UserShopEvent) serverRespond.getFormEvent());
+            if (title.equals("ItemBought")) itemBought();
         }
         connectToServer.send(new Message("ClientClosedEvent", null)); // notifies server that client disconnected
+    }
+
+    private void itemBought(){
+        MainFrame.getInstance().showSuccessfulBuy();
+    }
+    private void userShopEvent(UserShopEvent userShopEvent) {
+        MainFrame.getInstance().showUserShopEvent(userShopEvent);
     }
 
     private void startRoomGame(RoomEvent roomEvent) {
@@ -87,7 +99,7 @@ public class OnlineGameClient {
         MainFrame.getInstance().receivedRoomEvent(roomEvent);
     }
     public void sendRegisterMessage(User user) {
-        UserAccess.getInstance().add(user);
+        this.user = user;
         connectToServer.send(new Message("UserRegisterEvent", new UserEvent(user)));
     }
     public void sendLoginMessage(User user) {
@@ -98,6 +110,9 @@ public class OnlineGameClient {
     }
     public void sendBuyItemMessage(String itemName) {
         connectToServer.send(new Message("BuyItemEvent", new BuyItemEvent(itemName)));
+    }
+    public void sendComboBuyItemMessage(String item1, String item2){
+        connectToServer.send(new Message("ComboBuyItemEvent", new ComboBuyItemEvent(item1, item2)));
     }
     public void sendChatListRequest(){
         connectToServer.send(new Message("ChatListRequest", null));
@@ -125,6 +140,7 @@ public class OnlineGameClient {
     }
 
     private void receivedUserRegisterSuccessful(){
+        UserAccess.getInstance().add(user);
         Client.getInstance().receivedRegisterResult("yes");
     }
     private void receivedUserRegisterUnsuccessful() {

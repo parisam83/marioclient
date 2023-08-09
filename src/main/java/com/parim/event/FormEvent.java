@@ -12,7 +12,9 @@ import com.parim.event.notification.NotificationEvent;
 import com.parim.event.notification.UserNotifications;
 import com.parim.event.room.RoomEvent;
 import com.parim.event.shop.BuyItemEvent;
+import com.parim.event.shop.ComboBuyItemEvent;
 import com.parim.event.shop.ItemEvent;
+import com.parim.event.shop.UserShopEvent;
 import com.parim.event.user.UserEvent;
 
 @JsonTypeInfo(
@@ -32,6 +34,8 @@ import com.parim.event.user.UserEvent;
         @JsonSubTypes.Type(value = RoomEvent.class, name = "RoomEvent"),
         @JsonSubTypes.Type(value = NotificationEvent.class, name = "NotificationEvent"),
         @JsonSubTypes.Type(value = UserNotifications.class, name = "UserNotifications"),
+        @JsonSubTypes.Type(value = UserShopEvent.class, name = "UserShopEvent"),
+        @JsonSubTypes.Type(value = ComboBuyItemEvent.class, name = "ComboBuyItemEvent"),
 })
 public interface FormEvent {
 }
