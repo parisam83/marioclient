@@ -1,4 +1,6 @@
-package com.parim.event;
+package com.parim.event.shop;
+
+import com.parim.event.FormEvent;
 
 public class BuyItemEvent implements FormEvent {
     private String item;

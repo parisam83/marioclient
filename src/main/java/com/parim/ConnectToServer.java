@@ -2,7 +2,7 @@ package com.parim;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.parim.event.Message;
+import com.parim.model.Message;
 
 import java.io.IOException;
 import java.io.PrintWriter;

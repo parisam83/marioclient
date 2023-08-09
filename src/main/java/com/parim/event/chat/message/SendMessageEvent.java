@@ -1,4 +1,6 @@
-package com.parim.event;
+package com.parim.event.chat.message;
+
+import com.parim.event.FormEvent;
 
 public class SendMessageEvent implements FormEvent {
     String sender, receiver, message;

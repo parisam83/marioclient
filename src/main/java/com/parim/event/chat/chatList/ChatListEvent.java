@@ -1,4 +1,6 @@
-package com.parim.event;
+package com.parim.event.chat.chatList;
+
+import com.parim.event.FormEvent;
 
 import java.util.ArrayList;
 

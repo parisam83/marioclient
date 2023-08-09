@@ -1,5 +1,6 @@
-package com.parim.event;
+package com.parim.event.shop;
 
+import com.parim.event.FormEvent;
 import com.parim.model.Item;
 
 import java.util.ArrayList;

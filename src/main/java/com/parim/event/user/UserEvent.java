@@ -1,5 +1,6 @@
-package com.parim.event;
+package com.parim.event.user;
 
+import com.parim.event.FormEvent;
 import com.parim.model.User;
 
 public class UserEvent implements FormEvent {

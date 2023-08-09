@@ -1,4 +1,6 @@
-package com.parim.event;
+package com.parim.model;
+
+import com.parim.event.FormEvent;
 
 public class Message {
     private String title;

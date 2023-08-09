@@ -1,5 +1,6 @@
-package com.parim.event;
+package com.parim.event.chat.message;
 
+import com.parim.event.FormEvent;
 import com.parim.model.Chat;
 
 public class MessageEvent implements FormEvent {
